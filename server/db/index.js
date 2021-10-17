@@ -1,16 +1,19 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 /*
     This initializes the connection to our database so that we can do CRUD.
     
     @author McKilla Gorilla
 */
 mongoose
-    .connect('mongodb://127.0.0.1:27017/top5lists', { useNewUrlParser: true })
-    .catch(e => {
-        console.error('Connection error', e.message)
-    })
+  .connect(
+    "mongodb+srv://websaketh:SAKkot123@top5lists.uu1ve.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    { useNewUrlParser: true },
+    { useUnifiedTopology: true }
+  )
+  .catch((e) => {
+    console.error("Connection error", e.message);
+  });
 
-const db = mongoose.connection
+const db = mongoose.connection;
 
-module.exports = db
-
+module.exports = db;
