@@ -27,7 +27,7 @@ const ListSelector = () => {
   async function handleAddListOnClick() {
     const newList = await api.createTop5List({
       name: "Untitled",
-      items: ["?", "?", "?", "?", "?"],
+      items: ["1", "2", "3", "4", "5"],
     });
     store.loadIdNamePairs();
   }

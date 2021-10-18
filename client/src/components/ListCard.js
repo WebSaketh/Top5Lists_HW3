@@ -12,9 +12,9 @@ import { GlobalStoreContext } from "../store";
 function ListCard(props) {
   const { store } = useContext(GlobalStoreContext);
   const [editActive, setEditActive] = useState(false);
-  const [text, setText] = useState("");
-  store.history = useHistory();
   const { idNamePair, selected } = props;
+  const [text, setText] = useState(idNamePair.name);
+  store.history = useHistory();
 
   function handleLoadList(event) {
     if (!event.target.disabled) {
@@ -44,8 +44,8 @@ function ListCard(props) {
     if (event.code === "Enter") {
       let id = event.target.id.substring("list-".length);
       if (text === "") {
-        console.log("no change");
-        setEditActive(false);
+        store.changeListName(id, idNamePair.name);
+        toggleEdit();
         return;
       }
       store.changeListName(id, text);
