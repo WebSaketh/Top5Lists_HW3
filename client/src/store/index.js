@@ -47,7 +47,7 @@ export const useGlobalStore = () => {
       case GlobalStoreActionType.CHANGE_LIST_NAME: {
         return setStore({
           idNamePairs: payload.idNamePairs,
-          currentList: payload.top5List,
+          currentList: null,
           newListCounter: store.newListCounter,
           isListNameEditActive: false,
           isItemEditActive: false,
@@ -119,6 +119,7 @@ export const useGlobalStore = () => {
 
   // THIS FUNCTION PROCESSES CHANGING A LIST NAME
   store.changeListName = function (id, newName) {
+    console.log("changeListName");
     // GET THE LIST
     async function asyncChangeListName(id) {
       let response = await api.getTop5ListById(id);
@@ -281,7 +282,7 @@ export const useGlobalStore = () => {
     return store.isListNameEditActive != null;
   };
   store.isEditList = function () {
-    return (store.isListNameEditActive = true);
+    return (store.isItemEditActive = true);
   };
 
   // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME

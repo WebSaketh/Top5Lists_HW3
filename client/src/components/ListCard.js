@@ -37,12 +37,12 @@ function ListCard(props) {
   }
 
   function toggleEdit() {
+    console.log("toggleEdit");
     let newActive = !editActive;
     if (newActive) {
       store.setIsListNameEditActive();
     }
     setEditActive(newActive);
-    console.log(store.isEdit());
   }
 
   function handleKeyPress(event) {
@@ -53,9 +53,10 @@ function ListCard(props) {
         toggleEdit();
         return;
       }
+      console.log("pressed Enter Once!");
       store.changeListName(id, text);
       toggleEdit();
-      console.log(store.isEdit());
+      return;
     }
   }
 
