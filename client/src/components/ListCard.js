@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Component, useContext, useEffect, useState } from "react";
 import { unstable_renderSubtreeIntoContainer } from "react-dom";
 import { useHistory } from "react-router-dom";
 import { GlobalStoreContext } from "../store";
@@ -26,6 +26,11 @@ function ListCard(props) {
       store.setCurrentList(_id);
     }
   }
+
+  useEffect(() => {
+    //console.log(cardElement._owner.key);
+    document.getElementById("list-" + cardElement._owner.key)?.focus();
+  });
 
   function handleToggleEdit(event) {
     event.stopPropagation();
@@ -57,6 +62,12 @@ function ListCard(props) {
 
   function handleUpdateText(event) {
     setText(event.target.value);
+  }
+  function handleBlur(event) {
+    let id = event.target.id.substring("list-".length);
+    store.changeListName(id, idNamePair.name);
+    toggleEdit();
+    return;
   }
 
   let selectClass = "unselected-list-card";
@@ -110,6 +121,7 @@ function ListCard(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={idNamePair.name}
+        onBlur={handleBlur}
       />
     );
   }

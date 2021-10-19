@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { GlobalStoreContext } from "../store";
 /*
     This React component represents a single item in our
@@ -11,6 +11,10 @@ function Top5Item(props) {
   const [draggedTo, setDraggedTo] = useState(0);
   const [editActive, setEditActive] = useState(false);
   const [newText, setNewText] = useState(props.text);
+
+  useEffect(() => {
+    document.getElementById("item-" + (index + 1))?.focus();
+  });
 
   function handleDragStart(event) {
     event.dataTransfer.setData("item", event.target.id);
@@ -63,6 +67,10 @@ function Top5Item(props) {
     setNewText(event.target.value);
   }
 
+  function handleBlur() {
+    toggleEdit();
+  }
+
   let { index } = props;
   let itemClass = "top5-item";
   if (draggedTo) {
@@ -76,6 +84,7 @@ function Top5Item(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={props.text}
+        onBlur={handleBlur}
       />
     );
   }
