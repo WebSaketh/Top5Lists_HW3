@@ -20,6 +20,7 @@ export const GlobalStoreActionType = {
   SET_CURRENT_LIST: "SET_CURRENT_LIST",
   SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
   SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
+  SET_LIST_MARKED_DELETE: "SET_LIST_MARKED_DELETE",
 };
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -109,6 +110,16 @@ export const useGlobalStore = () => {
           listMarkedForDeletion: null,
         });
       }
+      case GlobalStoreActionType.SET_LIST_MARKED_DELETE: {
+        return setStore({
+          idNamePairs: store.idNamePairs,
+          currentList: store.currentList,
+          newListCounter: store.newListCounter,
+          isListNameEditActive: false,
+          isItemEditActive: false,
+          listMarkedForDeletion: payload,
+        });
+      }
       default:
         return store;
     }
@@ -177,6 +188,10 @@ export const useGlobalStore = () => {
           payload: pairsArray,
         });
       } else {
+        storeReducer({
+          type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+          payload: null,
+        });
         console.log("API FAILED TO GET THE LIST PAIRS");
       }
     }
@@ -291,6 +306,33 @@ export const useGlobalStore = () => {
       type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
       payload: null,
     });
+  };
+
+  store.setlistMarkedForDeletion = function (id, name) {
+    let listNamePair = [id, name];
+    storeReducer({
+      type: GlobalStoreActionType.SET_LIST_MARKED_DELETE,
+      payload: listNamePair,
+    });
+  };
+
+  store.hideDeleteListModal = function () {
+    document.getElementById("delete-modal").classList.remove("is-visible");
+  };
+  store.showDeleteListModal = function () {
+    document.getElementById("delete-modal").classList.add("is-visible");
+  };
+  store.deleteMarkedList = async function () {
+    console.log("delete", store.listMarkedForDeletion);
+    try {
+      const deleteResponse = await api.deleteTop5ListById(
+        store.listMarkedForDeletion[0]
+      );
+      console.log(deleteResponse);
+    } catch (e) {
+      console.error(e);
+    }
+    store.loadIdNamePairs();
   };
 
   // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT

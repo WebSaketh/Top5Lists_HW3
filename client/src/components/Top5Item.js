@@ -12,9 +12,9 @@ function Top5Item(props) {
   const [editActive, setEditActive] = useState(false);
   const [newText, setNewText] = useState(props.text);
 
-  // useEffect(() => {
-  //   document.getElementById("item-" + (index + 1))?.focus();
-  // });
+  useEffect(() => {
+    document.getElementById("item-" + (index + 1))?.focus();
+  });
 
   function handleDragStart(event) {
     event.dataTransfer.setData("item", event.target.id);
@@ -100,7 +100,7 @@ function Top5Item(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={props.text}
-        // onBlur={handleBlur}
+        onBlur={handleBlur}
       />
     );
   }

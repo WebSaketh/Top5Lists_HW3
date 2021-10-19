@@ -28,6 +28,7 @@ function ListCard(props) {
   }
 
   useEffect(() => {
+    document.getElementById("list-" + idNamePair._id)?.focus();
     store.clearAllTransactions();
   });
 
@@ -63,6 +64,15 @@ function ListCard(props) {
   function handleUpdateText(event) {
     setText(event.target.value);
   }
+
+  function handleDelete(event) {
+    event.stopPropagation();
+    let name = event.target.parentNode.textContent;
+    let id = event.target.id.substring("delete-list-".length);
+    store.setlistMarkedForDeletion(id, name);
+    store.showDeleteListModal();
+  }
+
   function handleBlur(event) {
     let id = event.target.id.substring("list-".length);
     store.changeListName(id, idNamePair.name);
@@ -98,6 +108,7 @@ function ListCard(props) {
         id={"delete-list-" + idNamePair._id}
         className="list-card-button"
         value={"\u2715"}
+        onClick={handleDelete}
       />
       <input
         disabled={cardStatus}
@@ -121,7 +132,7 @@ function ListCard(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={idNamePair.name}
-        // onBlur={handleBlur}
+        onBlur={handleBlur}
       />
     );
   }
