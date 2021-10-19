@@ -16,12 +16,21 @@ function EditToolbar() {
   let enabledButtonClass = "top5-button";
   let disabledButtonClass = "top5-button-disabled";
   function handleUndo() {
+    if (store.isItemEditActive) {
+      return;
+    }
     store.undo();
   }
   function handleRedo() {
+    if (store.isItemEditActive) {
+      return;
+    }
     store.redo();
   }
   function handleClose() {
+    if (store.isItemEditActive) {
+      return;
+    }
     history.push("/");
     store.closeCurrentList();
   }
