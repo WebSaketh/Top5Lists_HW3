@@ -10,9 +10,11 @@ import { useHistory } from "react-router-dom";
 function EditToolbar() {
   const { store } = useContext(GlobalStoreContext);
   const history = useHistory();
-
+  let undoTrue = store.isUndo();
+  let redoTrue = store.isRedo();
+  let closeTrue = store.isCurrent();
   let enabledButtonClass = "top5-button";
-  let disabledButtonClass = "top5-button ";
+  let disabledButtonClass = "top5-button-disabled";
   function handleUndo() {
     store.undo();
   }
@@ -33,12 +35,7 @@ function EditToolbar() {
         disabled={editStatus}
         id="undo-button"
         onClick={handleUndo}
-        //className={enabledButtonClass}
-        className={
-          store.tps.hasTransactionToUndo()
-            ? enabledButtonClass
-            : disabledButtonClass
-        }
+        className={undoTrue ? enabledButtonClass : disabledButtonClass}
       >
         &#x21B6;
       </div>
@@ -46,7 +43,7 @@ function EditToolbar() {
         disabled={editStatus}
         id="redo-button"
         onClick={handleRedo}
-        className={enabledButtonClass}
+        className={redoTrue ? enabledButtonClass : disabledButtonClass}
       >
         &#x21B7;
       </div>
@@ -54,7 +51,7 @@ function EditToolbar() {
         disabled={editStatus}
         id="close-button"
         onClick={handleClose}
-        className={enabledButtonClass}
+        className={closeTrue ? enabledButtonClass : disabledButtonClass}
       >
         &#x24E7;
       </div>

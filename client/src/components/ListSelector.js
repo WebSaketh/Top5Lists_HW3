@@ -25,6 +25,9 @@ const ListSelector = () => {
   }, []);
 
   async function handleAddListOnClick() {
+    if ((store.isListNameEditActive = true)) {
+      return;
+    }
     const newList = await api.createTop5List({
       name: "Untitled",
       items: ["1", "2", "3", "4", "5"],
@@ -44,7 +47,9 @@ const ListSelector = () => {
         <input
           type="button"
           id="add-list-button"
-          className="top5-button"
+          className={
+            !store.isListNameEditActive ? "top5-button" : "top5-button-disabled"
+          }
           value="+"
           onClick={handleAddListOnClick}
         />

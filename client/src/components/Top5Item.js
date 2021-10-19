@@ -52,7 +52,9 @@ function Top5Item(props) {
   }
   function handleKeyPress(event) {
     if (event.code === "Enter") {
-      store.addEditItemTransaction(index, props.text, newText);
+      if (newText !== props.text) {
+        store.addEditItemTransaction(index, props.text, newText);
+      }
       toggleEdit();
     }
   }
