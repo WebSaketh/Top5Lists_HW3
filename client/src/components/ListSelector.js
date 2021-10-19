@@ -25,7 +25,8 @@ const ListSelector = () => {
   }, []);
 
   async function handleAddListOnClick() {
-    if ((store.isListNameEditActive = true)) {
+    if (store.isListNameEditActive) {
+      console.log("fail to add due to open list");
       return;
     }
     const newList = await api.createTop5List({
@@ -33,6 +34,7 @@ const ListSelector = () => {
       items: ["1", "2", "3", "4", "5"],
     });
     store.loadIdNamePairs();
+    //store.setCurrentList();
   }
 
   let listCard = "";
