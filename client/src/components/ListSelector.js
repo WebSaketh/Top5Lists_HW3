@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ListCard from "./ListCard.js";
 import { GlobalStoreContext, GlobalStoreActionType } from "../store";
@@ -19,7 +19,6 @@ import api from "../api";
 const ListSelector = () => {
   const { store, storeReducer } = useContext(GlobalStoreContext);
   store.history = useHistory();
-
   useEffect(() => {
     store.loadIdNamePairs();
   }, []);
@@ -29,11 +28,21 @@ const ListSelector = () => {
       console.log("fail to add due to open list");
       return;
     }
+    if (store.newListCounter[0] === 0) {
+      const newList = await api.createTop5List({
+        name: "Untitled",
+        items: ["1", "2", "3", "4", "5"],
+      });
+      store.newListCounter[0] = store.newListCounter[0] + 1;
+      if (newList?.data?.top5List?._id)
+        store.setCurrentList(newList?.data?.top5List?._id);
+      return;
+    }
     const newList = await api.createTop5List({
-      name: "Untitled",
+      name: "Untitled-" + store.newListCounter[0],
       items: ["1", "2", "3", "4", "5"],
     });
-    store.loadIdNamePairs();
+    store.newListCounter[0] = store.newListCounter[0] + 1;
     if (newList?.data?.top5List?._id)
       store.setCurrentList(newList?.data?.top5List?._id);
   }

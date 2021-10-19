@@ -21,6 +21,7 @@ export const GlobalStoreActionType = {
   SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
   SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
   SET_LIST_MARKED_DELETE: "SET_LIST_MARKED_DELETE",
+  INCREMENT_NEW_LIST: "INCREMENT_NEW_LIST",
 };
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -33,7 +34,7 @@ export const useGlobalStore = () => {
   const [store, setStore] = useState({
     idNamePairs: [],
     currentList: null,
-    newListCounter: 0,
+    newListCounter: [0],
     listNameActive: false,
     itemActive: false,
     listMarkedForDeletion: null,
@@ -118,6 +119,16 @@ export const useGlobalStore = () => {
           isListNameEditActive: false,
           isItemEditActive: false,
           listMarkedForDeletion: payload,
+        });
+      }
+      case GlobalStoreActionType.INCREMENT_NEW_LIST: {
+        return setStore({
+          idNamePairs: store.idNamePairs,
+          currentList: store.currentList,
+          newListCounter: payload,
+          isListNameEditActive: false,
+          isItemEditActive: false,
+          listMarkedForDeletion: false,
         });
       }
       default:
@@ -313,6 +324,13 @@ export const useGlobalStore = () => {
     storeReducer({
       type: GlobalStoreActionType.SET_LIST_MARKED_DELETE,
       payload: listNamePair,
+    });
+  };
+
+  store.incrementCounter = function (value) {
+    storeReducer({
+      type: GlobalStoreActionType.INCREMENT_NEW_LIST,
+      payload: [value],
     });
   };
 
