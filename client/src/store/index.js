@@ -19,6 +19,7 @@ export const GlobalStoreActionType = {
   LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
   SET_CURRENT_LIST: "SET_CURRENT_LIST",
   SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+  SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
 };
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -97,6 +98,17 @@ export const useGlobalStore = () => {
           listMarkedForDeletion: null,
         });
       }
+      //START EDITING A LIST ITEM
+      case GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE: {
+        return setStore({
+          idNamePairs: store.idNamePairs,
+          currentList: store.currentList,
+          newListCounter: store.newListCounter,
+          isListNameEditActive: false,
+          isItemEditActive: payload,
+          listMarkedForDeletion: null,
+        });
+      }
       default:
         return store;
     }
@@ -144,6 +156,10 @@ export const useGlobalStore = () => {
       type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
       payload: {},
     });
+    tps.clearAllTransactions();
+  };
+
+  store.clearAllTransactions = function () {
     tps.clearAllTransactions();
   };
 
@@ -212,6 +228,15 @@ export const useGlobalStore = () => {
     // NOW MAKE IT OFFICIAL
     store.updateCurrentList();
   };
+
+  store.setisItemEditActive = function (bool) {
+    console.log(bool);
+    storeReducer({
+      type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
+      payload: bool,
+    });
+  };
+
   store.addEditItemTransaction = function (index, oldName, newName) {
     let transaction = new EditItem_Transaction(store, index, oldName, newName);
     tps.addTransaction(transaction);
@@ -254,6 +279,9 @@ export const useGlobalStore = () => {
   };
   store.isEdit = function () {
     return store.isListNameEditActive != null;
+  };
+  store.isEditList = function () {
+    return (store.isListNameEditActive = true);
   };
 
   // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME

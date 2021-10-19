@@ -12,9 +12,9 @@ function Top5Item(props) {
   const [editActive, setEditActive] = useState(false);
   const [newText, setNewText] = useState(props.text);
 
-  useEffect(() => {
-    document.getElementById("item-" + (index + 1))?.focus();
-  });
+  // useEffect(() => {
+  //   document.getElementById("item-" + (index + 1))?.focus();
+  // });
 
   function handleDragStart(event) {
     event.dataTransfer.setData("item", event.target.id);
@@ -44,21 +44,35 @@ function Top5Item(props) {
     setDraggedTo(false);
 
     // UPDATE THE LIST
-    store.addMoveItemTransaction(sourceId, targetId);
+    if (sourceId != targetId) {
+      store.addMoveItemTransaction(sourceId, targetId);
+    }
   }
 
   function handleToggleEdit(event) {
+    if (store.isItemEditActive) {
+      event.stopPropagation();
+      console.log("item currently being edited");
+      return;
+    }
     event.stopPropagation();
     toggleEdit();
   }
   function toggleEdit() {
-    setEditActive(!editActive);
+    setNewText(props.text);
+    let newActive = !editActive;
+    if (newActive) {
+      store.setisItemEditActive(true);
+    }
+    setEditActive(newActive);
   }
   function handleKeyPress(event) {
     if (event.code === "Enter") {
       if (newText !== props.text) {
         store.addEditItemTransaction(index, props.text, newText);
       }
+      setNewText(props.text);
+      store.setisItemEditActive(false);
       toggleEdit();
     }
   }
@@ -68,6 +82,8 @@ function Top5Item(props) {
   }
 
   function handleBlur() {
+    setNewText(props.text);
+    store.setisItemEditActive(false);
     toggleEdit();
   }
 
@@ -84,7 +100,7 @@ function Top5Item(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={props.text}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
       />
     );
   }
@@ -97,12 +113,17 @@ function Top5Item(props) {
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      draggable="true"
+      draggable={store.isItemEditActive ? "false" : "true"}
     >
       <input
         type="button"
         id={"edit-item-" + index + 1}
-        className="list-card-button"
+        //className="list-card-button"
+        className={
+          store.isItemEditActive
+            ? "list-card-button-disabled"
+            : "list-card-button"
+        }
         value={"\u270E"}
         onClick={handleToggleEdit}
       />

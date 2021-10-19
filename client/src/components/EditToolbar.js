@@ -12,7 +12,7 @@ function EditToolbar() {
   const history = useHistory();
   let undoTrue = store.isUndo();
   let redoTrue = store.isRedo();
-  let closeTrue = store.isCurrent() || store.isListNameEditActive;
+  let closeTrue = store.isCurrent() && store.isEditList();
   let enabledButtonClass = "top5-button";
   let disabledButtonClass = "top5-button-disabled";
   function handleUndo() {
@@ -35,7 +35,11 @@ function EditToolbar() {
         disabled={editStatus}
         id="undo-button"
         onClick={handleUndo}
-        className={undoTrue ? enabledButtonClass : disabledButtonClass}
+        className={
+          undoTrue && !store.isItemEditActive
+            ? enabledButtonClass
+            : disabledButtonClass
+        }
       >
         &#x21B6;
       </div>
@@ -43,7 +47,11 @@ function EditToolbar() {
         disabled={editStatus}
         id="redo-button"
         onClick={handleRedo}
-        className={redoTrue ? enabledButtonClass : disabledButtonClass}
+        className={
+          redoTrue && !store.isItemEditActive
+            ? enabledButtonClass
+            : disabledButtonClass
+        }
       >
         &#x21B7;
       </div>
@@ -51,7 +59,11 @@ function EditToolbar() {
         disabled={editStatus}
         id="close-button"
         onClick={handleClose}
-        className={closeTrue ? enabledButtonClass : disabledButtonClass}
+        className={
+          closeTrue && !store.isItemEditActive
+            ? enabledButtonClass
+            : disabledButtonClass
+        }
       >
         &#x24E7;
       </div>

@@ -28,8 +28,7 @@ function ListCard(props) {
   }
 
   useEffect(() => {
-    //console.log(cardElement._owner.key);
-    document.getElementById("list-" + cardElement._owner.key)?.focus();
+    store.clearAllTransactions();
   });
 
   function handleToggleEdit(event) {
@@ -121,7 +120,7 @@ function ListCard(props) {
         onKeyPress={handleKeyPress}
         onChange={handleUpdateText}
         defaultValue={idNamePair.name}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
       />
     );
   }
