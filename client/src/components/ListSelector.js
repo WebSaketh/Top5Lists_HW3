@@ -34,7 +34,8 @@ const ListSelector = () => {
       items: ["1", "2", "3", "4", "5"],
     });
     store.loadIdNamePairs();
-    //store.setCurrentList();
+    if (newList?.data?.top5List?._id)
+      store.setCurrentList(newList?.data?.top5List?._id);
   }
 
   let listCard = "";
