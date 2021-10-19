@@ -98,8 +98,10 @@ function ListCard(props) {
       />
     </div>
   );
-
-  if (editActive) {
+  if (editActive && !store.isListNameEditActive) {
+    setEditActive(false);
+  }
+  if (editActive && store.isListNameEditActive) {
     cardElement = (
       <input
         id={"list-" + idNamePair._id}

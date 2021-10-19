@@ -12,7 +12,7 @@ function EditToolbar() {
   const history = useHistory();
   let undoTrue = store.isUndo();
   let redoTrue = store.isRedo();
-  let closeTrue = store.isCurrent();
+  let closeTrue = store.isCurrent() || store.isListNameEditActive;
   let enabledButtonClass = "top5-button";
   let disabledButtonClass = "top5-button-disabled";
   function handleUndo() {
